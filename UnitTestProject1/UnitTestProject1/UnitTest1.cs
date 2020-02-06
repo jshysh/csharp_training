@@ -35,7 +35,7 @@ namespace WebAddressbookTests
             Circle c3 = c1;
 
             Assert.AreEqual(c1.Radius, 5);
-            Assert.AreEqual(c2.Radius, 10);
+            Assert.AreEqual(c2.Radius, 15);
             Assert.AreEqual(c3.Radius, 5);
 
             c3.Radius = 15;

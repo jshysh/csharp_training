@@ -20,9 +20,9 @@ namespace WebAddressbookTests
         [Test]
         public void ContactCreationTest()
         {
-            OpenHomePage();
-            Login(new AccountData("admin", "secret"));
-            InitContactCreation();
+            navigator.OpenHomePage();
+            loginHelper.Login(new AccountData("admin", "secret"));
+            contactHelper.InitContactCreation();
             ContactData contact = new ContactData("Jane", "Smith");
             contact.Nickname = "TestUser";
             contact.Title = "QA";
@@ -33,9 +33,10 @@ namespace WebAddressbookTests
             contact.Bday = "13";
             contact.Bmonth = "March";
             contact.Byear = "2000";
-            FillContactForm(contact);
-            SubmitContactCreation();
-            OpenHomePage();
+            contactHelper.FillContactForm(contact);
+            contactHelper.SubmitContactCreation();
+            navigator.OpenHomePage();
+            loginHelper.Logout();
         }
     }
  }
