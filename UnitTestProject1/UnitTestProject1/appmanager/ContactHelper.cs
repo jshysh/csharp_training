@@ -27,13 +27,13 @@ namespace WebAddressbookTests
 
         public ContactHelper Update(ContactData contact)
         {
-            Edit();
+            InitContactEdit();
             FillContactForm(contact);
             SubmitContactUpdate();
             return this;
         }
 
-        public ContactHelper Edit()
+        public ContactHelper InitContactEdit()
         {
             driver.FindElement(By.XPath("//img[@title='Edit']")).Click();
             return this;
