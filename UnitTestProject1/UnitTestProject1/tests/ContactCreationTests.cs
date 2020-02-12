@@ -9,7 +9,6 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
-using addressbook_web_tests;
 
 namespace WebAddressbookTests
 {
@@ -20,9 +19,6 @@ namespace WebAddressbookTests
         [Test]
         public void ContactCreationTest()
         {
-            navigator.OpenHomePage();
-            loginHelper.Login(new AccountData("admin", "secret"));
-            contactHelper.InitContactCreation();
             ContactData contact = new ContactData("Jane", "Smith");
             contact.Nickname = "TestUser";
             contact.Title = "QA";
@@ -33,10 +29,8 @@ namespace WebAddressbookTests
             contact.Bday = "13";
             contact.Bmonth = "March";
             contact.Byear = "2000";
-            contactHelper.FillContactForm(contact);
-            contactHelper.SubmitContactCreation();
-            navigator.OpenHomePage();
-            loginHelper.Logout();
+            app.Contacts.Create(contact);
+            app.Navigator.OpenHomePage();
         }
     }
  }
