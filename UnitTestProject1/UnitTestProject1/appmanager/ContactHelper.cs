@@ -25,6 +25,21 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper Delete()
+        {
+            driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            driver.SwitchTo().Alert().Accept();
+            return this;
+        }
+
+        public ContactHelper SelectContact()
+        {
+            manager.Navigator.OpenHomePage();
+            driver.FindElement(By.Name("selected[]")).Click();
+            return this;
+        }
+
+
         public ContactHelper SubmitContactCreation()
         {
             driver.FindElement(By.XPath("(//input[@name='submit'])[2]")).Click();
