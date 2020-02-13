@@ -17,7 +17,7 @@ namespace WebAddressbookTests
             this.groupName = groupName;
         }
 
-        public string GroupName
+        public string Name
         {
             get
             {
@@ -29,7 +29,7 @@ namespace WebAddressbookTests
             }
         }
 
-        public string GroupHeader
+        public string Header
         {
             get
             {
@@ -40,7 +40,7 @@ namespace WebAddressbookTests
                 groupHeader = value;
             }
         }
-        public string GroupFooter
+        public string Footer
         {
             get
             {

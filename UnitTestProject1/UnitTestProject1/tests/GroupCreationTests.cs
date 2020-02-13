@@ -10,8 +10,8 @@ namespace WebAddressbookTests
         public void GroupCreationTest()
         {
             GroupData group = new GroupData("groupname1");
-            group.GroupHeader = "groupheader1";
-            group.GroupFooter = "groupfooter1";
+            group.Header = "groupheader1";
+            group.Footer = "groupfooter1";
 
             app.Groups.Create(group);
         }
@@ -20,8 +20,8 @@ namespace WebAddressbookTests
         public void EmptyGroupCreationTest()
         {
             GroupData group = new GroupData("");
-            group.GroupHeader = "";
-            group.GroupFooter = "";
+            group.Header = "";
+            group.Footer = "";
 
             app.Groups.Create(group);
         }

@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    class GroupUpdateTests : TestBase
+    class GroupModificationTests : TestBase
     {
 
         [Test]
-        public void GroupUpdateTest()
+        public void GroupModificationTest()
         {
             GroupData group = new GroupData("Updated groupname1");
-            group.GroupHeader = "groupheader1";
-            group.GroupFooter = "groupfooter1";
+            group.Header = null;
+            group.Footer = null;
 
-            app.Groups.Update(group);
+            app.Groups.Modify(group);
         }
 
     }

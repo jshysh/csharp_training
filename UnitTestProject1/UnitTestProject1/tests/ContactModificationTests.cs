@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    class ContactUpdateTests : TestBase
+    class ContactModificationTests : TestBase
     {
 
     [Test]
-    public void ContactUpdateTest()
+    public void ContactModificationTest()
         {
             ContactData contact = new ContactData("John", "Smith1");
             contact.Nickname = "TestUser1";
