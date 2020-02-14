@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
 using NUnit.Framework;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WebAddressbookTests
 {
@@ -9,9 +11,11 @@ namespace WebAddressbookTests
         protected ApplicationManager app;
 
         [SetUp]
-        public void SetupTest()
+        public void SetupApplicationManager()
         {
-            app = TestSuiteFixture.app;
+            app = ApplicationManager.GetInstance();
         }
+
+
     }
 }
