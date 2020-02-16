@@ -19,6 +19,7 @@ namespace WebAddressbookTests
 
         public ContactHelper Create(ContactData contact)
         {
+            manager.Navigator.OpenHomePage();
             InitContactCreation();
             FillContactForm(contact);
             SubmitContactCreation();
@@ -33,42 +34,47 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper InitContactEdit()
+        public ContactHelper Delete()
         {
-            driver.FindElement(By.XPath("//img[@title='Edit']")).Click();
+            Click(By.XPath("//input[@value='Delete']"));
+            driver.SwitchTo().Alert().Accept();
+            IsElementPresent(By.XPath("//h1[contains(text(),'Delete record')]"));
             return this;
         }
 
-        public ContactHelper Delete()
+        public ContactHelper InitContactEdit()
         {
-            driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
-            driver.SwitchTo().Alert().Accept();
+            Click(By.XPath("//img[@title='Edit']"));
+            IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
             return this;
         }
 
         public ContactHelper SelectContact()
         {
             manager.Navigator.OpenHomePage();
-            driver.FindElement(By.Name("selected[]")).Click();
+            Click(By.Name("selected[]"));
             return this;
         }
 
 
         public ContactHelper SubmitContactCreation()
         {
-            driver.FindElement(By.XPath("(//input[@name='submit'])[2]")).Click();
+            Click(By.XPath("(//input[@name='submit'])[2]"));
+            IsElementPresent(By.XPath("//div[contains(text(),'Information entered into address book.')]"));
             return this;
         }
 
         public ContactHelper SubmitContactModification()
         {
-            driver.FindElement(By.XPath("//input[@name='update'][2]")).Click();
+            Click(By.XPath("//input[@name='update'][2]"));
+            IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
             return this;
         }
 
         public ContactHelper InitContactCreation()
         {
-            driver.FindElement(By.LinkText("add new")).Click();
+            Click(By.LinkText("add new"));
+            IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
             return this;
         }
 
@@ -83,11 +89,8 @@ namespace WebAddressbookTests
             Type(By.Name("home"), contact.Home);
             Type(By.Name("email"), contact.Email);
             Type(By.Name("home"), contact.Home);
-            driver.FindElement(By.Name("bday")).Click();
-            new SelectElement(driver.FindElement(By.Name("bday"))).SelectByText(contact.Bday);
-            driver.FindElement(By.Name("bday")).Click();
-            driver.FindElement(By.Name("bmonth")).Click();
-            new SelectElement(driver.FindElement(By.Name("bmonth"))).SelectByText(contact.Bmonth);
+            SelectValue(contact.Bday, By.Name("bday"));
+            SelectValue(contact.Bmonth, By.Name("bmonth"));
             Type(By.Name("byear"), contact.Byear);
             return this;
         }

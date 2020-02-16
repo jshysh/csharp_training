@@ -13,7 +13,7 @@ using OpenQA.Selenium.Support.UI;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    class ContactDeletionTests : AuthTestBase
+    class ContactRemovalTests : AuthTestBase
     {
         [Test]
         public void ContactRemoval()
@@ -21,7 +21,6 @@ namespace WebAddressbookTests
             app.Contacts.SelectContact();
             app.Contacts.Delete();
             app.Navigator.OpenHomePage();
-
         }
 
     }
