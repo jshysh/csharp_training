@@ -24,7 +24,11 @@ namespace WebAddressbookTests
             contact.Bday = "14";
             contact.Bmonth = "April";
             contact.Byear = "2001";
+            if (!app.Contacts.VerifyContactExists())
+            {
 
+                app.Contacts.Create(contact);
+            }
             app.Contacts.Update(contact);
             app.Navigator.OpenHomePage();
         }

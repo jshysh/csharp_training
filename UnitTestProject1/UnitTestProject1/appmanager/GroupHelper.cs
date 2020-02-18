@@ -26,6 +26,18 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public List<GroupData> GetGroupList()
+        {
+            List<GroupData> groups = new List<GroupData>();
+            manager.Navigator.OpenGroupPage();
+            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+            foreach (IWebElement element in elements)
+            {
+                groups.Add(new GroupData(element.Text));
+            }           
+            return groups;
+        }
+
         public GroupHelper Modify(GroupData group)
         {
             manager.Navigator.OpenGroupPage();
@@ -95,6 +107,15 @@ namespace WebAddressbookTests
         {
             Click(By.LinkText("group page"));
             return this;
+        }
+
+        public bool VerifyGroupExists()
+        {
+            manager.Navigator.OpenGroupPage();
+            if (IsElementPresent(By.Name("selected[]")))
+            {
+              return true;
+            } else return false;
         }
     }
 }

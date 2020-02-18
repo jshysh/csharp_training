@@ -29,8 +29,10 @@ namespace WebAddressbookTests
             contact.Bday = "13";
             contact.Bmonth = "March";
             contact.Byear = "2000";
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
             app.Contacts.Create(contact);
-            app.Navigator.OpenHomePage();
+            List<ContactData> newContacts = app.Contacts.GetContactList();
+            Assert.AreEqual(oldContacts.Count +1, newContacts.Count);
         }
     }
  }

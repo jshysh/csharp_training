@@ -18,9 +18,27 @@ namespace WebAddressbookTests
         [Test]
         public void ContactRemoval()
         {
+            ContactData contact = new ContactData("Jane", "Smith");
+            contact.Nickname = "TestUser";
+            contact.Title = "QA";
+            contact.Company = "Some Company";
+            contact.Address = "N2B 4E3";
+            contact.Home = "5197311000";
+            contact.Email = "test@gmail.com";
+            contact.Bday = "13";
+            contact.Bmonth = "March";
+            contact.Byear = "2000";
+
+            if (!app.Contacts.VerifyContactExists())
+            {
+                app.Contacts.Create(contact);
+            }
+
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
             app.Contacts.SelectContact();
             app.Contacts.Delete();
-            app.Navigator.OpenHomePage();
+            List<ContactData> newContacts = app.Contacts.GetContactList();
+            Assert.AreEqual(oldContacts.Count - 1, newContacts.Count);
         }
 
     }

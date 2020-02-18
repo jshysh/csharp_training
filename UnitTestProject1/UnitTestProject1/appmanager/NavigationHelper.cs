@@ -20,11 +20,20 @@ namespace WebAddressbookTests
 
         public void OpenHomePage()
         {
-            if (driver.Url == baseURL + "addressbook/")
+            if (driver.Url == baseURL + "addressbook/" && IsElementPresent(By.Name("searchstring")))
             {
                 return;
             }
             driver.Navigate().GoToUrl(baseURL + "addressbook/");
+        }
+
+        public void ClickHomePage()
+        {
+            if (driver.Url == baseURL + "addressbook/" && IsElementPresent(By.Name("searchstring")))
+            {
+                return;
+            }
+            Click(By.XPath("//a[text()='Home']"));
         }
 
         public void OpenGroupPage()

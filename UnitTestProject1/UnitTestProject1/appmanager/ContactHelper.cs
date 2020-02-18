@@ -34,12 +34,30 @@ namespace WebAddressbookTests
             return this;
         }
 
+        
         public ContactHelper Delete()
         {
             Click(By.XPath("//input[@value='Delete']"));
             driver.SwitchTo().Alert().Accept();
             IsElementPresent(By.XPath("//h1[contains(text(),'Delete record')]"));
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(7);
             return this;
+        }
+
+        public List<ContactData> GetContactList()
+        {
+            int i = 2;
+            List<ContactData> contacts = new List<ContactData>();
+            manager.Navigator.OpenHomePage();
+            ICollection<IWebElement> elements = driver.FindElements(By.XPath("//*[@id='maintable']/tbody/tr[" + i + "]/td[2]"));
+            for (; IsElementPresent(By.XPath("//*[@id='maintable']/tbody/tr[" + i + "]/td[2]")); i++)
+            {
+                foreach (IWebElement element in elements)
+                {
+                    contacts.Add(new ContactData(element.Text, null));
+                }
+            }            
+            return contacts;
         }
 
         public ContactHelper InitContactEdit()
@@ -93,6 +111,16 @@ namespace WebAddressbookTests
             SelectValue(contact.Bmonth, By.Name("bmonth"));
             Type(By.Name("byear"), contact.Byear);
             return this;
+        }
+
+        public bool VerifyContactExists()
+        {
+            manager.Navigator.OpenHomePage();
+            if (IsElementPresent(By.Name("selected[]")))
+            {
+                return true;
+            }
+            else return false;
         }
     }
 }
