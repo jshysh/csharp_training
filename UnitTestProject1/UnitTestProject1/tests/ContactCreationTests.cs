@@ -19,7 +19,7 @@ namespace WebAddressbookTests
         [Test]
         public void ContactCreationTest()
         {
-            ContactData contact = new ContactData("Jane", "Smith");
+            ContactData contact = new ContactData("Smith", "Jane");
             contact.Nickname = "TestUser";
             contact.Title = "QA";
             contact.Company = "Some Company";
@@ -32,7 +32,9 @@ namespace WebAddressbookTests
             List<ContactData> oldContacts = app.Contacts.GetContactList();
             app.Contacts.Create(contact);
             List<ContactData> newContacts = app.Contacts.GetContactList();
-            Assert.AreEqual(oldContacts.Count +1, newContacts.Count);
+            oldContacts.Add(contact);
+            
+            Assert.AreEqual(oldContacts, newContacts);
         }
     }
  }

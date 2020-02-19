@@ -29,11 +29,7 @@ namespace WebAddressbookTests
 
         public void ClickHomePage()
         {
-            if (driver.Url == baseURL + "addressbook/" && IsElementPresent(By.Name("searchstring")))
-            {
-                return;
-            }
-            Click(By.XPath("//a[text()='Home']"));
+            Click(By.XPath("//a[.='home']"));
         }
 
         public void OpenGroupPage()

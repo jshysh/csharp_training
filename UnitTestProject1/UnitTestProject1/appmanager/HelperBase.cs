@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
+using System;
 
 namespace WebAddressbookTests
 {
@@ -57,5 +58,11 @@ namespace WebAddressbookTests
             bool result = s1.Equals(s2);
         }
 
+        public void WaitForElementPresent(int timeOut, By locator)
+        {
+            new WebDriverWait(driver, TimeSpan.FromSeconds(timeOut)).
+                Until(ExpectedConditions.ElementExists((locator)));
+        }
+           
     }
 }

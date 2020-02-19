@@ -39,24 +39,27 @@ namespace WebAddressbookTests
         {
             Click(By.XPath("//input[@value='Delete']"));
             driver.SwitchTo().Alert().Accept();
-            IsElementPresent(By.XPath("//h1[contains(text(),'Delete record')]"));
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(7);
+            manager.Navigator.ClickHomePage();
             return this;
         }
 
         public List<ContactData> GetContactList()
         {
+            manager.Navigator.ClickHomePage();
             int i = 2;
             List<ContactData> contacts = new List<ContactData>();
-            manager.Navigator.OpenHomePage();
-            ICollection<IWebElement> elements = driver.FindElements(By.XPath("//*[@id='maintable']/tbody/tr[" + i + "]/td[2]"));
+            ICollection<IWebElement> firstNames = driver.FindElements(By.XPath("//*[@id='maintable']/tbody/tr[" + i + "]/td[2]"));
+            ICollection<IWebElement> lastNames = driver.FindElements(By.XPath("//*[@id='maintable']/tbody/tr[" + i + "]/td[3]"));
             for (; IsElementPresent(By.XPath("//*[@id='maintable']/tbody/tr[" + i + "]/td[2]")); i++)
             {
-                foreach (IWebElement element in elements)
+                foreach (IWebElement firstName in firstNames)
                 {
-                    contacts.Add(new ContactData(element.Text, null));
+                    foreach (IWebElement lastName in lastNames)
+                    {                       
+                        contacts.Add(new ContactData(firstName.Text, lastName.Text));
+                    }
                 }
-            }            
+            }
             return contacts;
         }
 
@@ -98,8 +101,8 @@ namespace WebAddressbookTests
 
         public ContactHelper FillContactForm(ContactData contact)
         {
-            Type(By.Name("firstname"), contact.FirstName);
             Type(By.Name("lastname"), contact.LastName);
+            Type(By.Name("firstname"), contact.FirstName);
             Type(By.Name("nickname"), contact.Nickname);
             Type(By.Name("title"), contact.Title);
             Type(By.Name("company"), contact.Company);
