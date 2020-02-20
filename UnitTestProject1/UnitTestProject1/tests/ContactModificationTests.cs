@@ -29,8 +29,16 @@ namespace WebAddressbookTests
 
                 app.Contacts.Create(contact);
             }
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
             app.Contacts.Update(contact);
-            app.Navigator.OpenHomePage();
+            List<ContactData> newContacts = app.Contacts.GetContactList();
+
+            oldContacts[0].LastName = contact.LastName;
+            oldContacts[0].FirstName = contact.FirstName;
+            oldContacts.Sort();
+            newContacts.Sort();
+
+            Assert.AreEqual(oldContacts, newContacts);
         }
     }
 }
