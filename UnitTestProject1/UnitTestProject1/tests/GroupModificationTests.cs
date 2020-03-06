@@ -14,7 +14,7 @@ namespace WebAddressbookTests
         [Test]
         public void GroupModificationTest()
         {
-            GroupData group = new GroupData("groupname1");
+            GroupData group = new GroupData("groupname11");
             group.Header = "groupheader1";
             group.Footer = "groupfooter1";
             if (!app.Groups.VerifyGroupExists())
@@ -24,6 +24,8 @@ namespace WebAddressbookTests
             }
             List<GroupData> oldGroups = app.Groups.GetGroupList();
             app.Groups.Modify(group);
+            Assert.AreEqual(oldGroups.Count, app.Groups.GetGroupCount());
+
             List<GroupData> newGroups = app.Groups.GetGroupList();
             oldGroups[0].Name = group.Name;
             oldGroups.Sort();

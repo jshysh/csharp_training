@@ -8,155 +8,25 @@ namespace WebAddressbookTests
 {
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
-        private string firstName;
-        private string lastName;
-        private string nickname;
-        private string title;
-        private string company;
-        private string address;
-        private string home;
-        private string email;
-        private string bday;
-        private string bmonth;
-        private string byear;
-
         public ContactData(string lastName, string firstName)
         {
-            this.firstName = firstName;
-            this.lastName = lastName;
+            FirstName = firstName;
+            LastName = lastName;
         }
 
-        public string FirstName
-        {
-            get
-            {
-                return firstName;
-            }
-            set
-            {
-                firstName = value;
-            }
-        }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Nickname { get; set; }
+        public string Title { get; set; }
+        public string Company { get; set; }
+        public string Address { get; set; }
+        public string Home { get; set; }
+        public string Email { get; set; }
+        public string Bday { get; set; }
+        public string Bmonth { get; set; }
+        public string Byear { get; set; }
+        public string Id { get; set; }
 
-        public string LastName
-        {
-            get
-            {
-                return lastName;
-            }
-            set
-            {
-                lastName = value;
-            }
-        }
-
-        public string Nickname
-        {
-            get
-            {
-                return nickname;
-            }
-            set
-            {
-                nickname = value;
-            }
-        }
-
-        public string Title
-        {
-            get
-            {
-                return title;
-            }
-            set
-            {
-                title = value;
-            }
-        }
-
-        public string Company
-        {
-            get
-            {
-                return company;
-            }
-            set
-            {
-                company = value;
-            }
-        }
-
-        public string Address
-        {
-            get
-            {
-                return address;
-            }
-            set
-            {
-                address = value;
-            }
-        }
-
-        public string Home
-        {
-            get
-            {
-                return home;
-            }
-            set
-            {
-                home = value;
-            }
-        }
-
-        public string Email 
-        {
-            get
-            {
-                return email;
-            }
-            set
-            {
-                email = value;
-            }
-        }
-
-        public string Bday
-        {
-            get
-            {
-                return bday;
-            }
-            set
-            {
-                bday = value;
-            }
-        }
-
-        public string Bmonth
-        {
-            get
-            {
-                return bmonth;
-            }
-            set
-            {
-                bmonth = value;
-            }
-        }
-
-        public string Byear
-        {
-            get
-            {
-                return byear;
-            }
-            set
-            {
-                byear = value;
-            }
-        }
 
         public bool Equals(ContactData other)
         {
@@ -184,12 +54,23 @@ namespace WebAddressbookTests
 
         public int CompareTo(ContactData other)
         {
-            if (Object.ReferenceEquals(other, null))
             {
-                return 1;
-            }
-            return FirstName.CompareTo(other.FirstName) + LastName.CompareTo(other.LastName);
-        }
+                if (object.ReferenceEquals(other, null))
+                {
+                    return 1;
+                }
 
+                if (LastName.CompareTo(other.LastName) != 0)
+                {
+                    return LastName.CompareTo(other.LastName);
+                }
+                else if (FirstName.CompareTo(other.FirstName) != 0)
+                {
+                    return FirstName.CompareTo(other.FirstName);
+                }
+
+                return 0;
+            }
+        }
     }
 }

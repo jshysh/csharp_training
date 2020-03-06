@@ -7,13 +7,12 @@ namespace WebAddressbookTests
     [TestFixture]
     public class GroupRemovalTests : AuthTestBase
     {
+        GroupData group = new GroupData("groupname1");
 
         [Test]
         public void GroupRemovalTest()
         {
-            GroupData group = new GroupData("groupname1");
-            group.Header = "groupheader1";
-            group.Footer = "groupfooter1";
+            
 
             if (!app.Groups.VerifyGroupExists())
             {
@@ -21,12 +20,17 @@ namespace WebAddressbookTests
             }
             List<GroupData> oldGroups = app.Groups.GetGroupList();
             app.Groups.Delete();
+            Assert.AreEqual(oldGroups.Count -1, app.Groups.GetGroupCount());
             List<GroupData> newGroups = app.Groups.GetGroupList();
 
+            GroupData toBeRemoved = oldGroups[0];
             oldGroups.RemoveAt(0);
-            oldGroups.Sort();
-            newGroups.Sort();
             Assert.AreEqual(oldGroups, newGroups);
+
+            foreach (GroupData group in newGroups)
+            {
+                Assert.AreNotEqual(group.Id, toBeRemoved.Id);
+            }
         }
     }
 }

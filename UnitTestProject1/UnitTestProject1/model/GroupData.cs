@@ -8,49 +8,18 @@ namespace WebAddressbookTests
 {
     public class GroupData : IEquatable<GroupData>, IComparable<GroupData>
     {
-        private string groupName;
         private string groupHeader;
         private string groupFooter;
 
         public GroupData(string groupName)
         {
-            this.groupName = groupName;
+            Name = groupName;
         }
 
-        public string Name
-        {
-            get
-            {
-                return groupName;
-            }
-            set
-            {
-                groupName = value;
-            }
-        }
-
-        public string Header
-        {
-            get
-            {
-                return groupHeader;
-            }
-            set
-            {
-                groupHeader = value;
-            }
-        }
-        public string Footer
-        {
-            get
-            {
-                return groupFooter;
-            }
-            set
-            {
-                groupFooter = value;
-            }
-        }
+        public string Name { get; set; }
+        public string Header { get; set; }
+        public string Footer { get; set; }
+        public string Id { get; set; }
 
         public int CompareTo(GroupData other)
         {
