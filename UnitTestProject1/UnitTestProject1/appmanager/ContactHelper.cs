@@ -68,74 +68,71 @@ namespace WebAddressbookTests
             return new List<ContactData>(contactCache);
         }
 
-
-
         public ContactHelper InitContactEdit()
-    {
+        {
         Click(By.XPath("//img[@title='Edit']"));
         IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
         return this;
-    }
+        }
 
-    public ContactHelper SelectContact()
-    {
+        public ContactHelper SelectContact()
+        {
         manager.Navigator.OpenHomePage();
         Click(By.Name("selected[]"));
         return this;
-    }
+        }
 
-
-    public ContactHelper SubmitContactCreation()
-    {
+        public ContactHelper SubmitContactCreation()
+        {
         Click(By.XPath("(//input[@name='submit'])[2]"));
         IsElementPresent(By.XPath("//div[contains(text(),'Information entered into address book.')]"));
         contactCache = null;
         return this;
-    }
-
-    public ContactHelper SubmitContactModification()
-    {
-        Click(By.XPath("//input[@name='update'][2]"));
-        IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
-        contactCache = null;
-        return this;
-    }
-
-    public ContactHelper InitContactCreation()
-    {
-        Click(By.LinkText("add new"));
-        IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
-        return this;
-    }
-
-    public ContactHelper FillContactForm(ContactData contact)
-    {
-        Type(By.Name("lastname"), contact.LastName);
-        Type(By.Name("firstname"), contact.FirstName);
-        Type(By.Name("nickname"), contact.Nickname);
-        Type(By.Name("title"), contact.Title);
-        Type(By.Name("company"), contact.Company);
-        Type(By.Name("address"), contact.Address);
-        Type(By.Name("home"), contact.Home);
-        Type(By.Name("email"), contact.Email);
-        Type(By.Name("home"), contact.Home);
-        return this;
-    }
-
-    public bool VerifyContactExists()
-    {
-        manager.Navigator.OpenHomePage();
-        if (IsElementPresent(By.Name("selected[]")))
-        {
-            return true;
         }
-        else return false;
-    }
 
-    public int GetContactCount()
-    {
-        manager.Navigator.ClickHomePage();
-        return driver.FindElements(By.XPath("//img[@title='Edit']")).Count;
-    }
+        public ContactHelper SubmitContactModification()
+        {
+            Click(By.XPath("//input[@name='update'][2]"));
+            IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
+            contactCache = null;
+            return this;
+        }
+
+        public ContactHelper InitContactCreation()
+        {
+            Click(By.LinkText("add new"));
+            IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
+            return this;
+        }
+
+        public ContactHelper FillContactForm(ContactData contact)
+        {
+            Type(By.Name("lastname"), contact.LastName);
+            Type(By.Name("firstname"), contact.FirstName);
+            Type(By.Name("nickname"), contact.Nickname);
+            Type(By.Name("title"), contact.Title);
+            Type(By.Name("company"), contact.Company);
+            Type(By.Name("address"), contact.Address);
+            Type(By.Name("home"), contact.Home);
+            Type(By.Name("email"), contact.Email);
+            Type(By.Name("home"), contact.Home);
+            return this;
+        }
+
+        public bool VerifyContactExists()
+        {
+            manager.Navigator.OpenHomePage();
+            if (IsElementPresent(By.Name("selected[]")))
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        public int GetContactCount()
+        {
+            manager.Navigator.ClickHomePage();
+            return driver.FindElements(By.Name("entry")).Count;
+        }
     }
 }

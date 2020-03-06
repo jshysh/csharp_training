@@ -14,29 +14,41 @@ namespace WebAddressbookTests
     [Test]
     public void ContactModificationTest()
         {
-            ContactData contact = new ContactData("Smith1", "John");
-            contact.Nickname = "TestUser1";
-            contact.Title = "QA1";
-            contact.Company = "Some Company1";
-            contact.Address = "N2B 4E31";
-            contact.Home = "51973110001";
-            contact.Email = "test@gmail.com1";
+            ContactData newData = new ContactData("Smith1", "John");
+            newData.Nickname = "TestUser1";
+            newData.Title = "QA1";
+            newData.Company = "Some Company1";
+            newData.Address = "N2B 4E31";
+            newData.Home = "51973110001";
+            newData.Email = "test@gmail.com1";
 
             if (!app.Contacts.VerifyContactExists())
             {
-                app.Contacts.Create(contact);
+                app.Contacts.Create(newData);
             }
 
             List<ContactData> oldContacts = app.Contacts.GetContactList();
-            app.Contacts.Update(contact);
+            ContactData oldData = oldContacts[0];
+            app.Contacts.Update(newData);
             Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactCount());
 
             List<ContactData> newContacts = app.Contacts.GetContactList();
-            oldContacts[0].LastName = contact.LastName;
-            oldContacts[0].FirstName = contact.FirstName;
+            oldContacts[0].LastName = newData.LastName;
+            oldContacts[0].FirstName = newData.FirstName;
             oldContacts.Sort();
             newContacts.Sort();
             Assert.AreEqual(oldContacts, newContacts);
+
+            foreach (ContactData contact in newContacts)
+            {
+                if (contact.Id == oldData.Id)
+                {
+                    Assert.AreEqual(newData.FirstName, contact.FirstName);
+                    Assert.AreEqual(newData.LastName, contact.LastName);
+                }
+            }
+
+
         }
     }
 }
