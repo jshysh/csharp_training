@@ -56,11 +56,12 @@ namespace WebAddressbookTests
                 ICollection<IWebElement> elements = driver.FindElements(By.Name("entry")); //get all lines from Contacts
                 foreach (IWebElement element in elements)
                 {
-                    contactCache.Add(new ContactData(
-                        element.FindElement(By.XPath("./td[2]")).Text,
-                        element.FindElement(By.XPath("./td[3]")).Text)
+                    string lastName = element.FindElement(By.XPath("./td[2]")).Text;
+                    string firstName = element.FindElement(By.XPath("./td[3]")).Text;
+                    string id = element.FindElement(By.Name("selected[]")).GetAttribute("value");
+                    contactCache.Add(new ContactData(lastName, firstName)
                     {
-                        Id = element.FindElement(By.Name("selected[]")).GetAttribute("value")
+                        Id = id
                     });
                 }
             }
