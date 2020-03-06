@@ -30,10 +30,8 @@ namespace WebAddressbookTests
             app.Contacts.Delete();
 
             Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
-
-
             List<ContactData> newContacts = app.Contacts.GetContactList();
-            oldContacts.RemoveAt(0);
+
             oldContacts.Sort();
             newContacts.Sort();
 
@@ -46,6 +44,5 @@ namespace WebAddressbookTests
                 Assert.AreNotEqual(contact.Id, toBeRemoved.Id);
             }
         }
-
     }
 }

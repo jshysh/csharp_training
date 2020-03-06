@@ -29,6 +29,7 @@ namespace WebAddressbookTests
 
         public void ClickHomePage()
         {
+            WaitForElementPresent(2, By.XPath("//a[.='home']"));
             Click(By.XPath("//a[.='home']"));
         }
 

@@ -28,6 +28,7 @@ namespace WebAddressbookTests
 
         public ContactHelper Update(ContactData contact)
         {
+            contactCache = null;
             InitContactEdit();
             FillContactForm(contact);
             SubmitContactModification();
@@ -41,7 +42,6 @@ namespace WebAddressbookTests
             driver.SwitchTo().Alert().Accept();
             manager.Navigator.ClickHomePage();
             contactCache = null;
-
             return this;
         }
 
@@ -56,19 +56,15 @@ namespace WebAddressbookTests
                 ICollection<IWebElement> elements = driver.FindElements(By.Name("entry")); //get all lines from Contacts
                 foreach (IWebElement element in elements)
                 {
-                    IList<IWebElement> cells = driver.FindElements(By.TagName("td"));
-                    string id = cells[0].FindElement(By.Name("selected[]")).GetAttribute("value");
-                    string lastName = cells[1].Text;
-                    string firstName = cells[2].Text;
-
-                    contactCache.Add(new ContactData(lastName, firstName)
+                    contactCache.Add(new ContactData(
+                        element.FindElement(By.XPath("./td[2]")).Text,
+                        element.FindElement(By.XPath("./td[3]")).Text)
                     {
-                        Id = id
+                        Id = element.FindElement(By.Name("selected[]")).GetAttribute("value")
                     });
                 }
             }
             return new List<ContactData>(contactCache);
-
         }
 
 
@@ -93,7 +89,6 @@ namespace WebAddressbookTests
         Click(By.XPath("(//input[@name='submit'])[2]"));
         IsElementPresent(By.XPath("//div[contains(text(),'Information entered into address book.')]"));
         contactCache = null;
-
         return this;
     }
 
@@ -102,7 +97,6 @@ namespace WebAddressbookTests
         Click(By.XPath("//input[@name='update'][2]"));
         IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
         contactCache = null;
-
         return this;
     }
 
@@ -142,6 +136,5 @@ namespace WebAddressbookTests
         manager.Navigator.ClickHomePage();
         return driver.FindElements(By.XPath("//img[@title='Edit']")).Count;
     }
-
-}
+    }
 }

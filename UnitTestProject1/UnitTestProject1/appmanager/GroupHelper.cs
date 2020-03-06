@@ -117,7 +117,6 @@ namespace WebAddressbookTests
         {
             Click(By.Name("delete"));
             groupCache = null;
-
             return this;
         }
 

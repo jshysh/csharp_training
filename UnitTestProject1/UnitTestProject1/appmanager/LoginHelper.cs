@@ -37,6 +37,7 @@ namespace WebAddressbookTests
             if (IsLoggedIn())
             {
                 driver.FindElement(By.LinkText("Logout")).Click();
+                WaitForElementPresent(2, By.XPath("//input[@value='Login']"));
             }
         }
 
@@ -48,8 +49,13 @@ namespace WebAddressbookTests
         public bool IsLoggedIn(AccountData account)
         {
             return IsLoggedIn()
-                && driver.FindElement(By.Name("logout")).FindElement(By.TagName("b")).Text
-                    == "(" + account.Username + ")";
+                && GetLoggedAccount() == account.Username;
+        }
+
+        public string GetLoggedAccount()
+        {
+            string username = driver.FindElement(By.Name("logout")).FindElement(By.TagName("b")).Text;
+            return username.Substring(1, username.Length - 2);
         }
     }
 }
