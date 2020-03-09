@@ -40,7 +40,7 @@ namespace WebAddressbookTests
             {
                 return true;
             }
-            return Name == other.Name;
+            return Name.Equals(other.Name, StringComparison.OrdinalIgnoreCase);
         }
 
         public override int GetHashCode()

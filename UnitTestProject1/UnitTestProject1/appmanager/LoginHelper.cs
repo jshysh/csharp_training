@@ -49,10 +49,10 @@ namespace WebAddressbookTests
         public bool IsLoggedIn(AccountData account)
         {
             return IsLoggedIn()
-                && GetLoggedAccount() == account.Username;
+                && GetLoggedUsername() == account.Username;
         }
 
-        public string GetLoggedAccount()
+        public string GetLoggedUsername()
         {
             string username = driver.FindElement(By.Name("logout")).FindElement(By.TagName("b")).Text;
             return username.Substring(1, username.Length - 2);
