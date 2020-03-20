@@ -26,10 +26,77 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactData GetContactInformationFromTable(int index)
+        {
+            manager.Navigator.ClickHomePage();
+            IList <IWebElement> cells = driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"));
+
+            string lastName = cells[1].Text;
+            string firstName = cells[2].Text;
+            string address = cells[3].Text;
+            string email = cells[4].Text;
+            string allPhones = cells[5].Text;
+
+            return new ContactData(firstName, lastName)
+            {
+                Address = address,
+                AllPhones = allPhones,
+                Email = email
+            };
+
+
+        }
+
+        public ContactData GetContactInformationFromEditForm(int index)
+        {
+            manager.Navigator.ClickHomePage();
+            InitContactEdit(0);
+            string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            string address = driver.FindElement(By.Name("address")).GetAttribute("value");
+            string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
+            string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
+            string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
+            string email = driver.FindElement(By.Name("email")).GetAttribute("value");
+
+            return new ContactData(firstName, lastName)
+            {
+                Address = address,
+                Home = homePhone,
+                Mobile = mobilePhone,
+                Work = workPhone,
+                Email = email
+            };
+        }
+
+         public ContactData GetContactInformationFromDetails(int index)
+        {
+            manager.Navigator.ClickHomePage();
+            OpenContactDetails(0);
+            string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
+            string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
+            string address = driver.FindElement(By.Name("address")).GetAttribute("value");
+            string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
+            string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
+            string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
+            string email = driver.FindElement(By.Name("email")).GetAttribute("value");
+
+            return new ContactData(firstName, lastName)
+            {
+                Address = address,
+                Home = homePhone,
+                Mobile = mobilePhone,
+                Work = workPhone,
+                Email = email
+            };
+          }
+            
+
         public ContactHelper Update(ContactData contact)
         {
             contactCache = null;
-            InitContactEdit();
+            InitContactEdit(0);
             FillContactForm(contact);
             SubmitContactModification();
             return this;
@@ -68,12 +135,23 @@ namespace WebAddressbookTests
             return new List<ContactData>(contactCache);
         }
 
-        public ContactHelper InitContactEdit()
+        public ContactHelper InitContactEdit(int index)
         {
-        Click(By.XPath("//img[@title='Edit']"));
-        IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
-        return this;
+            driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"))[7]
+                .FindElement(By.TagName("a")).Click();
+            IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
+            return this;
         }
+
+        public ContactHelper OpenContactDetails(int index)
+        {
+            driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"))[6]
+                .FindElement(By.TagName("a")).Click();
+            return this;
+        }
+
 
         public ContactHelper SelectContact()
         {
