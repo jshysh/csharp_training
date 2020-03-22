@@ -31,9 +31,9 @@ namespace WebAddressbookTests
 
 
             Assert.AreEqual(fromTable, fromDetails);
-//            Assert.AreEqual(fromTable.Address, fromDetails.Address);
-//            Assert.AreEqual(fromTable.Email, fromDetails.Email);
-//            Assert.AreEqual(fromTable.AllPhones, fromDetails.AllPhones);
+            Assert.AreEqual(fromTable.Address, fromDetails.Address);
+            Assert.AreEqual(fromTable.AllEmails, fromDetails.AllEmails);
+            Assert.AreEqual(fromTable.AllPhones, fromDetails.AllPhones);
         }
     }
 }

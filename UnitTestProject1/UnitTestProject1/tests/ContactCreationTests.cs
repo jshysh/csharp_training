@@ -20,7 +20,16 @@ namespace WebAddressbookTests
         [Test]
         public void ContactCreationTest()
         {
-            ContactData contact = new ContactData("Smith", "Jane");
+            ContactData contact = new ContactData("Smith", "Jane")
+            {
+                Address = "N2B 2L6",
+                Work = "519721721",
+                Home = "519721721",
+                Mobile = "519721721",
+                Email = "jane@gmail.com",
+                Email2 = "jane@gmail.com",
+                Email3 = "jane@gmail.com"
+            };
 
             List<ContactData> oldContacts = app.Contacts.GetContactList();
 

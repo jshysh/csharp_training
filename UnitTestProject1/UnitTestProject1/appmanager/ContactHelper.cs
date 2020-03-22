@@ -93,7 +93,23 @@ namespace WebAddressbookTests
             string firstName = fullName.Substring(0, fullName.LastIndexOf(" ") + 1).Trim();
             string lastName = fullName.Remove(0, fullName.IndexOf(" ") + 1).Trim();
 
-            return new ContactData(lastName, firstName);
+            string allDetails = driver.FindElement(By.Id("content")).Text;
+            string allData = allDetails.Remove(0, allDetails.IndexOf("\r\n") + 1).Trim();
+
+            string[] cells = Regex.Split(allData, "\r\n");
+
+            string address = cells[0];
+            string allPhones = CleanUpPhone(cells[2]) + "\r\n" 
+                + CleanUpPhone(cells[3]) + "\r\n" + CleanUpPhone(cells[4]);
+            string allEmails = CleanUp(cells[6]) + "\r\n" + CleanUp(cells[7])
+                + "\r\n" + CleanUp(cells[8]);
+
+            return new ContactData(lastName, firstName)
+            {
+                Address = address,
+                AllPhones = allPhones,
+                AllEmails = allEmails
+            };
          }
 
 
@@ -158,7 +174,6 @@ namespace WebAddressbookTests
             return this;
         }
 
-
         public ContactHelper SelectContact()
         {
         manager.Navigator.OpenHomePage();
@@ -193,13 +208,13 @@ namespace WebAddressbookTests
         {
             Type(By.Name("lastname"), contact.LastName);
             Type(By.Name("firstname"), contact.FirstName);
-            Type(By.Name("nickname"), contact.Nickname);
-            Type(By.Name("title"), contact.Title);
-            Type(By.Name("company"), contact.Company);
             Type(By.Name("address"), contact.Address);
             Type(By.Name("home"), contact.Home);
+            Type(By.Name("work"), contact.Work);
+            Type(By.Name("mobile"), contact.Mobile);
             Type(By.Name("email"), contact.Email);
-            Type(By.Name("home"), contact.Home);
+            Type(By.Name("email2"), contact.Email2);
+            Type(By.Name("email3"), contact.Email3);
             return this;
         }
 
@@ -226,6 +241,24 @@ namespace WebAddressbookTests
 
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value);
+        }
+
+        private string CleanUp(string s)
+        {
+            if (s == null || s == "")
+            {
+                return "";
+            }
+            return Regex.Replace(s, "[ -()]", "");
+        }
+
+        private string CleanUpPhone(string s)
+        {
+            if (s == null || s == "")
+            {
+                return "";
+            }
+            return Regex.Replace(s, "[ -()HMW:]", "");
         }
     }
 }

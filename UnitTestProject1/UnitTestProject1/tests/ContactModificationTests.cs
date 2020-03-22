@@ -14,14 +14,16 @@ namespace WebAddressbookTests
     [Test]
     public void ContactModificationTest()
         {
-            ContactData newData = new ContactData("Smith1", "John");
-            newData.Nickname = "TestUser1";
-            newData.Title = "QA1";
-            newData.Company = "Some Company1";
-            newData.Address = "N2B 4E31";
-            newData.Home = "51973110001";
-            newData.Email = "test@gmail.com1";
-
+            ContactData newData = new ContactData("Smith1", "John")
+            {
+                Address = "N2B 2L6",
+                Work = "519721721",
+                Home = "519721721",
+                Mobile = "519721721",
+                Email = "jane@gmail.com",
+                Email2 = "jane@gmail.com",
+                Email3 = "jane@gmail.com"
+            };
             if (!app.Contacts.VerifyContactExists())
             {
                 app.Contacts.Create(newData);

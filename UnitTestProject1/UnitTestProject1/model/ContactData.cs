@@ -11,7 +11,6 @@ namespace WebAddressbookTests
     {
         private string allPhones;
         private string allEmails;
-        private string allInfo;
         private string fullName;
 
 
@@ -79,21 +78,6 @@ namespace WebAddressbookTests
             }
 
         }
-
-/*        public string AllInfo
-        {
-            get
-            {
-                if (allInfo != null)
-                {
-                    return AllInfo;
-                }
-                else
-                {
-                   
-                }
-            }
-        } */
 
         public string FullName
         {
