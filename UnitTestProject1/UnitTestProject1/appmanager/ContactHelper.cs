@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
@@ -26,6 +27,14 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper Search(string s)
+        {
+            manager.Navigator.ClickHomePage();
+            Type(By.Name("searchstring"), s);
+
+            return this;
+        }
+
         public ContactData GetContactInformationFromTable(int index)
         {
             manager.Navigator.ClickHomePage();
@@ -38,14 +47,12 @@ namespace WebAddressbookTests
             string allEmails = cells[4].Text;
             string allPhones = cells[5].Text;
 
-            return new ContactData(firstName, lastName)
+            return new ContactData(lastName, firstName)
             {
                 Address = address,
                 AllPhones = allPhones,
                 AllEmails = allEmails
             };
-
-
         }
 
         public ContactData GetContactInformationFromEditForm(int index)
@@ -63,7 +70,7 @@ namespace WebAddressbookTests
             string email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
 
 
-            return new ContactData(firstName, lastName)
+            return new ContactData(lastName, firstName)
             {
                 Address = address,
                 Home = homePhone,
@@ -79,25 +86,16 @@ namespace WebAddressbookTests
          public ContactData GetContactInformationFromDetails(int index)
         {
             manager.Navigator.ClickHomePage();
-            OpenContactDetails(0);
-            string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
-            string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
-            string address = driver.FindElement(By.Name("address")).GetAttribute("value");
-            string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
-            string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
-            string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
-            string email = driver.FindElement(By.Name("email")).GetAttribute("value");
+            OpenContactDetails(index);
 
-            return new ContactData(firstName, lastName)
-            {
-                Address = address,
-                Home = homePhone,
-                Mobile = mobilePhone,
-                Work = workPhone,
-                Email = email
-            };
-          }
-            
+            string fullName = driver.FindElement(By.Id("content"))
+                .FindElement(By.TagName("b")).Text;
+            string firstName = fullName.Substring(0, fullName.LastIndexOf(" ") + 1).Trim();
+            string lastName = fullName.Remove(0, fullName.IndexOf(" ") + 1).Trim();
+
+            return new ContactData(lastName, firstName);
+         }
+
 
         public ContactHelper Update(ContactData contact)
         {
@@ -126,7 +124,9 @@ namespace WebAddressbookTests
             {
                 contactCache = new List<ContactData>();
                 manager.Navigator.ClickHomePage();
-                ICollection<IWebElement> elements = driver.FindElements(By.Name("entry")); //get all lines from Contacts
+
+                //get all lines from Contacts
+                ICollection<IWebElement> elements = driver.FindElements(By.Name("entry"));
                 foreach (IWebElement element in elements)
                 {
                     string lastName = element.FindElement(By.XPath("./td[2]")).Text;
@@ -217,6 +217,15 @@ namespace WebAddressbookTests
         {
             manager.Navigator.ClickHomePage();
             return driver.FindElements(By.Name("entry")).Count;
+        }
+
+        public int GetNumberOfSearchResults()
+        {
+            manager.Navigator.ClickHomePage();
+            string text = driver.FindElement(By.TagName("label")).Text;
+
+            Match m = new Regex(@"\d+").Match(text);
+            return Int32.Parse(m.Value);
         }
     }
 }

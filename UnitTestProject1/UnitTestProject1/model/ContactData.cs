@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace WebAddressbookTests
@@ -10,6 +11,9 @@ namespace WebAddressbookTests
     {
         private string allPhones;
         private string allEmails;
+        private string allInfo;
+        private string fullName;
+
 
         public ContactData(string lastName, string firstName)
         {
@@ -44,7 +48,7 @@ namespace WebAddressbookTests
                 }
                 else
                 {
-                    return (CleanUp(Home) + CleanUp(Mobile) + CleanUp(Work)).Trim();
+                    return (CleanUpPhone(Home) + CleanUpPhone(Mobile) + CleanUpPhone(Work)).Trim();
                 }
             }
 
@@ -76,13 +80,52 @@ namespace WebAddressbookTests
 
         }
 
-        private string CleanUp(string phone)
+/*        public string AllInfo
         {
-            if (phone == null || phone == "")
+            get
+            {
+                if (allInfo != null)
+                {
+                    return AllInfo;
+                }
+                else
+                {
+                   
+                }
+            }
+        } */
+
+        public string FullName
+        {
+            get
+            {
+                if (fullName != null)
+                {
+                    return FullName;
+                }
+                else
+                {
+                    return (CleanUp(FirstName)) + (CleanUp(LastName));
+                }
+            }
+        }
+
+        private string CleanUpPhone(string s)
+        {
+            if (s == null || s == "")
             {
                 return "";
             }
-            return phone.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "") + "\r\n";
+            return Regex.Replace(s, "[ -()]HMW:", "") + "\r\n";
+        }
+
+        private string CleanUp(string s)
+        {
+            if (s == null || s == "")
+            {
+                return "";
+            }
+            return Regex.Replace(s, "[ -()]", "") + "\r\n";
         }
 
         public bool Equals(ContactData other)
