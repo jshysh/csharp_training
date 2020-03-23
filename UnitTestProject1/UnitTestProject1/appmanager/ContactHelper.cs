@@ -88,29 +88,12 @@ namespace WebAddressbookTests
             manager.Navigator.ClickHomePage();
             OpenContactDetails(index);
 
-            string fullName = driver.FindElement(By.Id("content"))
-                .FindElement(By.TagName("b")).Text;
-            string firstName = fullName.Substring(0, fullName.LastIndexOf(" ") + 1).Trim();
-            string lastName = fullName.Remove(0, fullName.IndexOf(" ") + 1).Trim();
-
             string allDetails = driver.FindElement(By.Id("content")).Text;
-            string allData = allDetails.Remove(0, allDetails.IndexOf("\r\n") + 1).Trim();
-
-            string[] cells = Regex.Split(allData, "\r\n");
-
-            string address = cells[0];
-            string allPhones = CleanUpPhone(cells[2]) + "\r\n" 
-                + CleanUpPhone(cells[3]) + "\r\n" + CleanUpPhone(cells[4]);
-            string allEmails = CleanUp(cells[6]) + "\r\n" + CleanUp(cells[7])
-                + "\r\n" + CleanUp(cells[8]);
-
-            return new ContactData(lastName, firstName)
+            return new ContactData("", "")
             {
-                Address = address,
-                AllPhones = allPhones,
-                AllEmails = allEmails
+                AllDetails = allDetails
             };
-         }
+        }
 
 
         public ContactHelper Update(ContactData contact)
@@ -121,7 +104,6 @@ namespace WebAddressbookTests
             SubmitContactModification();
             return this;
         }
-
         
         public ContactHelper Delete()
         {
@@ -242,24 +224,6 @@ namespace WebAddressbookTests
 
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value);
-        }
-
-        private string CleanUp(string s)
-        {
-            if (s == null || s == "")
-            {
-                return "";
-            }
-            return Regex.Replace(s, "[ -()]", "");
-        }
-
-        private string CleanUpPhone(string s)
-        {
-            if (s == null || s == "")
-            {
-                return "";
-            }
-            return Regex.Replace(s, "[ -()HMW:]", "");
         }
     }
 }

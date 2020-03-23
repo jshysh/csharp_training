@@ -11,7 +11,7 @@ namespace WebAddressbookTests
     {
         private string allPhones;
         private string allEmails;
-        private string fullName;
+        private string allDetails;
 
 
         public ContactData(string lastName, string firstName)
@@ -71,27 +71,119 @@ namespace WebAddressbookTests
                     return (CleanUp(Email) + CleanUp(Email2) + CleanUp(Email3)).Trim();
                 }
             }
-
             set
             {
                 allEmails = value;
             }
-
         }
 
-        public string FullName
+        public string AllDetails
         {
             get
             {
-                if (fullName != null)
+                if (allDetails != null)
                 {
-                    return FullName;
+                    return allDetails;
                 }
                 else
                 {
-                    return (CleanUp(FirstName)) + (CleanUp(LastName));
+                    return (EndStringInsert(EndStringInsert(ContactDetailsList(
+                        FirstName, LastName, Nickname, Title, Company, Address)))
+                        + EndStringInsert(EndStringInsert(GetTelephoneList(Home, Mobile, Work)))
+                        + EndStringInsert(EndStringInsert(GetEmailList(Email, Email2, Email3)))).Trim();
                 }
             }
+            set
+            {
+                allDetails = value;
+            }
+        }
+
+        public string GetEmailList(string email, string email2, string email3)
+        {
+            string form = "";
+
+            if (email != null && email != "")
+            {
+                form = form + EndStringInsert(email);
+            }
+            if (email2 != null && email2 != "")
+            {
+                form = form + EndStringInsert(email2);
+            }
+            if (email3 != null && email3 != "")
+            {
+                form = form + EndStringInsert(email3);
+            }
+            return form.Trim();
+        }
+
+
+        public string GetTelephoneList(string home, string mobile, string work)
+        {
+            string form = "";
+
+            if (home != null && home != "")
+            {
+                form = form + "H: " + EndStringInsert(Home);
+            }
+            if (mobile != null && mobile != "")
+            {
+                form = form + "M: " + EndStringInsert(Mobile);
+            }
+            if (work != null && work != "")
+            {
+                form = form + "W: " + EndStringInsert(Work);
+            }
+            return form.Trim();
+        }
+
+        public string StartStringInsert(string line)
+        {
+            if (line == null || line == "")
+            {
+                return "";
+            }
+            return "\r\n" + line;
+        }
+
+        public string EndStringInsert(string line)
+        {
+            if (line == null || line == "")
+            {
+                return "";
+            }
+            return line + "\r\n";
+        }
+
+        public string ContactDetailsList(
+                  string firstname,
+                  string lastname,
+                  string nickname,
+                  string title,
+                  string company,
+                  string address)
+        {
+            return (EndStringInsert(GetFullName(firstname, lastname))
+                + EndStringInsert(nickname)
+                + EndStringInsert(title)
+                + EndStringInsert(company)
+                + EndStringInsert(address)).Trim();
+        }
+
+        public string GetFullName(string firstname, string lastname)
+        {
+            string form = "";
+
+            if (firstname != null && firstname != "")
+            {
+                form = FirstName + " ";
+            }
+            if (lastname != null && lastname != "")
+            {
+                form = form + LastName + " ";
+            }
+            return form.Trim();
         }
 
         private string CleanUpPhone(string s)
