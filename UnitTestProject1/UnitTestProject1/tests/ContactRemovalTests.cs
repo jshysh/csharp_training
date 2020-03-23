@@ -15,16 +15,10 @@ namespace WebAddressbookTests
     [TestFixture]
     class ContactRemovalTests : AuthTestBase
     {
-        ContactData contact = new ContactData("Jane", "Smith");
 
         [Test]
         public void ContactRemoval()
         {
-            if (!app.Contacts.VerifyContactExists())
-            {
-                app.Contacts.Create(contact);
-            }
-
             List<ContactData> oldContacts = app.Contacts.GetContactList();
             app.Contacts.SelectContact();
             app.Contacts.Delete();

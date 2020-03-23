@@ -218,14 +218,15 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public bool VerifyContactExists()
+        public ContactHelper VerifyContactExists()
         {
-            manager.Navigator.OpenHomePage();
-            if (IsElementPresent(By.Name("selected[]")))
+            manager.Navigator.ClickHomePage();
+            if (!IsElementPresent(By.Name("entry")))
             {
-                return true;
+                ContactData contact = new ContactData("Vasilisa", "Smirnova");
+                Create(contact);
             }
-            else return false;
+            return this;
         }
 
         public int GetContactCount()
