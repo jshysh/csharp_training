@@ -11,6 +11,11 @@ namespace WebAddressbookTests
         private string groupHeader;
         private string groupFooter;
 
+        public GroupData()
+        {
+        }
+
+
         public GroupData(string groupName)
         {
             Name = groupName;

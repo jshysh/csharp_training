@@ -1,6 +1,9 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace WebAddressbookTests
 {
@@ -12,24 +15,21 @@ namespace WebAddressbookTests
         {
             List<GroupData> groups = new List<GroupData>();
 
-            for(int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++)
             {
-                groups.Add(new GroupData(GenerateRandomString(30))
+                groups.Add(new GroupData(GenerateRandomString(35))
                 {
-                    Header = GenerateRandomString(100),
-                    Footer = GenerateRandomString(100)
+                    Header = GenerateRandomString(400),
+                    Footer = GenerateRandomString(400)
                 });
             }
-
             return groups;
         }
 
-        public static IEnumerable<GroupData> RandomGroupDataFromFile()
+        public static IEnumerable<GroupData> GroupDataFromCsvFile()
         {
             List<GroupData> groups = new List<GroupData>();
-
             string[] lines = File.ReadAllLines(@"groups.csv");
-
             foreach (string l in lines)
             {
                 string[] parts = l.Split(',');
@@ -39,13 +39,24 @@ namespace WebAddressbookTests
                     Footer = parts[2]
                 });
             }
-
-
             return groups;
         }
 
+        public static IEnumerable<GroupData> GroupDataFromXmlFile()
+        {
+            return (List<GroupData>)
+                new XmlSerializer(typeof(List<GroupData>))
+                .Deserialize(new StreamReader(@"groups.xml"));
+        }
 
-        [Test, TestCaseSource("RandomGroupDataFromFile")]
+        public static IEnumerable<GroupData> GroupDataFromJsonFile()
+        {
+            return JsonConvert.DeserializeObject<List<GroupData>>(
+                File.ReadAllText(@"groups.json"));
+        }
+
+
+        [Test, TestCaseSource("GroupDataFromJsonFile")]
         public void GroupCreationTest(GroupData group)
         {
             List<GroupData> oldGroups = app.Groups.GetGroupList();

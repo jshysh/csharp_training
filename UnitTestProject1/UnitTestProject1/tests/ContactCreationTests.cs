@@ -10,6 +10,8 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System.IO;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace WebAddressbookTests
 {
@@ -18,76 +20,65 @@ namespace WebAddressbookTests
     {
         public static IEnumerable<ContactData> RandomContactDataProvider()
         {
-            List<ContactData> contact = new List<ContactData>();
+            List<ContactData> contacts = new List<ContactData>();
 
             for (int i = 0; i < 5; i++)
             {
-                contact.Add(new ContactData(GenerateRandomString(10), GenerateRandomString(10))
+                contacts.Add(new ContactData(GenerateRandomString(35), GenerateRandomString(35))
                 {
-                    Address = GenerateRandomString(30),
-                    Work = GenerateRandomString(30),
-                    Home = GenerateRandomString(30),
-                    Mobile = GenerateRandomString(30),
-                    Email = GenerateRandomString(30),
-                    Email2 = GenerateRandomString(30),
-                    Email3 = GenerateRandomString(30)
-                });
-            }
+                    Address = GenerateRandomString(175),
 
-            return contact;
-        }
+                    Home = GenerateRandomString(35),
+                    Mobile = GenerateRandomString(35),
+                    Work = GenerateRandomString(35),
 
-        public static IEnumerable<ContactData> RandomContactDataFromFile()
-        {
-            List<ContactData> contacts = new List<ContactData>();
-            string[] lines = File.ReadAllLines(@"contacts.csv");
-
-            foreach (string l in lines)
-            {
-                string[] parts = l.Split(',');
-                contacts.Add(new ContactData(parts[0], parts[1]){
-                    Address = parts[2],
-                    Work = parts[3],
-                    Home = parts[4],
-                    Mobile = parts[5],
-                    Email = parts[6],
-                    Email2 = parts[7],
-                    Email3 = parts[8]
+                    Email = GenerateRandomString(35),
+                    Email2 = GenerateRandomString(35),
+                    Email3 = GenerateRandomString(35),
                 });
             }
             return contacts;
         }
 
-        [Test]
-        public void ContactCreationTest()
+        public static IEnumerable<ContactData> ContactDataFromCsvFile()
         {
-            ContactData contact = new ContactData("Smith", "Jane")
+            List<ContactData> contacts = new List<ContactData>();
+            string[] lines = File.ReadAllLines(@"contacts.csv");
+            foreach (string l in lines)
             {
-                Address = "N2B 2L6",
-                Work = "519721721",
-                Home = "519721721",
-                Mobile = "519721721",
-                Email = "jane@gmail.com",
-                Email2 = "jane@gmail.com",
-                Email3 = "jane@gmail.com"
-            };
+                string[] parts = l.Split(',');
+                contacts.Add(new ContactData(parts[0], parts[1])
+                {
+                    Address = parts[6],
 
-            List<ContactData> oldContacts = app.Contacts.GetContactList();
+                    Home = parts[7],
+                    Mobile = parts[8],
+                    Work = parts[9],
 
-            app.Contacts.Create(contact);
-
-            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
-
-            List<ContactData> newContacts = app.Contacts.GetContactList();
-
-            oldContacts.Add(contact);
-            oldContacts.Sort();
-            newContacts.Sort();
-
-            Assert.AreEqual(oldContacts, newContacts);
+                    Email = parts[11],
+                    Email2 = parts[12],
+                    Email3 = parts[13],
+                });
+            }
+            return contacts;
         }
 
-        /*[Test, TestCaseSource("RandomContactDataFromFile")]
+        public static IEnumerable<ContactData> ContactDataFromXmlFile()
+        {
+            return (List<ContactData>)
+                new XmlSerializer(typeof(List<ContactData>))
+                .Deserialize(new StreamReader(@"contacts.xml"));
+        }
+
+        public static IEnumerable<ContactData> ContactDataFromJsonFile()
+        {
+            return JsonConvert.DeserializeObject<List<ContactData>>(
+                File.ReadAllText(@"contacts.json"));
+        }
+
+
+
+        [Test, TestCaseSource("ContactDataFromJsonFile")]
         public void ContactCreationTest(ContactData contact)
         {
             List<ContactData> oldContacts = app.Contacts.GetContactList();
@@ -104,7 +95,6 @@ namespace WebAddressbookTests
 
             Assert.AreEqual(oldContacts, newContacts);
         }
-        */
     }
  }
 
