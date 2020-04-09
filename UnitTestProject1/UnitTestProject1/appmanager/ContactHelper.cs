@@ -38,7 +38,7 @@ namespace WebAddressbookTests
         public ContactData GetContactInformationFromTable(int index)
         {
             manager.Navigator.ClickHomePage();
-            IList <IWebElement> cells = driver.FindElements(By.Name("entry"))[index]
+            IList<IWebElement> cells = driver.FindElements(By.Name("entry"))[index]
                 .FindElements(By.TagName("td"));
 
             string lastName = cells[1].Text;
@@ -79,38 +79,21 @@ namespace WebAddressbookTests
                 Email = email,
                 Email2 = email2,
                 Email3 = email3
-  
-          };
+
+            };
         }
 
-         public ContactData GetContactInformationFromDetails(int index)
+        public ContactData GetContactInformationFromDetails(int index)
         {
             manager.Navigator.ClickHomePage();
             OpenContactDetails(index);
 
-            string fullName = driver.FindElement(By.Id("content"))
-                .FindElement(By.TagName("b")).Text;
-            string firstName = fullName.Substring(0, fullName.LastIndexOf(" ") + 1).Trim();
-            string lastName = fullName.Remove(0, fullName.IndexOf(" ") + 1).Trim();
-
             string allDetails = driver.FindElement(By.Id("content")).Text;
-            string allData = allDetails.Remove(0, allDetails.IndexOf("\r\n") + 1).Trim();
-
-            string[] cells = Regex.Split(allData, "\r\n");
-
-            string address = cells[0];
-            string allPhones = CleanUpPhone(cells[2]) + "\r\n" 
-                + CleanUpPhone(cells[3]) + "\r\n" + CleanUpPhone(cells[4]);
-            string allEmails = CleanUp(cells[6]) + "\r\n" + CleanUp(cells[7])
-                + "\r\n" + CleanUp(cells[8]);
-
-            return new ContactData(lastName, firstName)
+            return new ContactData("", "")
             {
-                Address = address,
-                AllPhones = allPhones,
-                AllEmails = allEmails
+                AllDetails = allDetails
             };
-         }
+        }
 
 
         public ContactHelper Update(ContactData contact)
@@ -122,7 +105,6 @@ namespace WebAddressbookTests
             return this;
         }
 
-        
         public ContactHelper Delete()
         {
             Click(By.XPath("//input[@value='Delete']"));
@@ -176,17 +158,17 @@ namespace WebAddressbookTests
 
         public ContactHelper SelectContact()
         {
-        manager.Navigator.OpenHomePage();
-        Click(By.Name("selected[]"));
-        return this;
+            manager.Navigator.OpenHomePage();
+            Click(By.Name("selected[]"));
+            return this;
         }
 
         public ContactHelper SubmitContactCreation()
         {
-        Click(By.XPath("(//input[@name='submit'])[2]"));
-        IsElementPresent(By.XPath("//div[contains(text(),'Information entered into address book.')]"));
-        contactCache = null;
-        return this;
+            Click(By.XPath("(//input[@name='submit'])[2]"));
+            IsElementPresent(By.XPath("//div[contains(text(),'Information entered into address book.')]"));
+            contactCache = null;
+            return this;
         }
 
         public ContactHelper SubmitContactModification()
@@ -218,14 +200,15 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public bool VerifyContactExists()
+        public ContactHelper VerifyContactExists()
         {
-            manager.Navigator.OpenHomePage();
-            if (IsElementPresent(By.Name("selected[]")))
+            manager.Navigator.ClickHomePage();
+            if (!IsElementPresent(By.Name("entry")))
             {
-                return true;
+                ContactData contact = new ContactData("Vasilisa", "Smirnova");
+                Create(contact);
             }
-            else return false;
+            return this;
         }
 
         public int GetContactCount()
@@ -241,24 +224,6 @@ namespace WebAddressbookTests
 
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value);
-        }
-
-        private string CleanUp(string s)
-        {
-            if (s == null || s == "")
-            {
-                return "";
-            }
-            return Regex.Replace(s, "[ -()]", "");
-        }
-
-        private string CleanUpPhone(string s)
-        {
-            if (s == null || s == "")
-            {
-                return "";
-            }
-            return Regex.Replace(s, "[ -()HMW:]", "");
         }
     }
 }

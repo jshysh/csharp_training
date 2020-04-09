@@ -24,11 +24,8 @@ namespace WebAddressbookTests
                 Email2 = "jane@gmail.com",
                 Email3 = "jane@gmail.com"
             };
-            if (!app.Contacts.VerifyContactExists())
-            {
-                app.Contacts.Create(newData);
-            }
-
+            app.Contacts.VerifyContactExists();
+            
             List<ContactData> oldContacts = app.Contacts.GetContactList();
             ContactData oldData = oldContacts[0];
             app.Contacts.Update(newData);
@@ -49,8 +46,6 @@ namespace WebAddressbookTests
                     Assert.AreEqual(newData.LastName, contact.LastName);
                 }
             }
-
-
         }
     }
 }
