@@ -60,25 +60,35 @@ namespace WebAddressbookTests
             return new List<GroupData>(groupCache);
         }
 
-        public GroupHelper Modify(GroupData group)
+        public GroupHelper Modify(GroupData group, int index)
         {
             manager.Navigator.OpenGroupPage();
             manager.Navigator.OpenGroupPage();
-            InitGroupUpdate();
+            InitGroupUpdate(index);
             FillGroupForm(group);
             SubmitGroupModification();
             ReturnToGroupPage();
             return this;
         }
 
-        public GroupHelper Delete()
+        public GroupHelper Delete(int index)
         {
             manager.Navigator.OpenGroupPage();
-            SelectGroup();
+            SelectGroup(index);
             RemoveGroup();
             ReturnToGroupPage();
             return this;
         }
+
+        public GroupHelper Delete(GroupData group)
+        {
+            manager.Navigator.OpenGroupPage();
+            SelectGroup(group.Id);
+            RemoveGroup();
+            ReturnToGroupPage();
+            return this;
+        }
+
 
         public int GetGroupCount()
         {
@@ -92,9 +102,9 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper InitGroupUpdate()
+        public GroupHelper InitGroupUpdate(int index)
         {
-            SelectGroup();
+            SelectGroup(index);
             Click(By.Name("edit"));
             return this;
         }
@@ -121,9 +131,15 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public GroupHelper SelectGroup()
+        public GroupHelper SelectGroup(int index)
         {
-            Click(By.Name("selected[]"));
+            Click(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]"));
+            return this;
+        }
+
+        public GroupHelper SelectGroup(String id)
+        {
+            Click(By.XPath("(//input[@name='selected[]' and @value = " + id + "])"));
             return this;
         }
 

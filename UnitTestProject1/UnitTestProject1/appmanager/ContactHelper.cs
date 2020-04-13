@@ -58,7 +58,7 @@ namespace WebAddressbookTests
         public ContactData GetContactInformationFromEditForm(int index)
         {
             manager.Navigator.ClickHomePage();
-            InitContactEdit(0);
+            InitContactEdit(index);
             string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
             string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
             string address = driver.FindElement(By.Name("address")).GetAttribute("value");
@@ -96,17 +96,28 @@ namespace WebAddressbookTests
         }
 
 
-        public ContactHelper Update(ContactData contact)
+        public ContactHelper Update(ContactData contact, int index)
         {
             contactCache = null;
-            InitContactEdit(0);
+            InitContactEdit(index);
             FillContactForm(contact);
-            SubmitContactModification();
+            SubmitContactModification(0);
             return this;
         }
 
-        public ContactHelper Delete()
+        public ContactHelper Delete(int index)
         {
+            SelectContact(index);
+            Click(By.XPath("//input[@value='Delete']"));
+            driver.SwitchTo().Alert().Accept();
+            manager.Navigator.ClickHomePage();
+            contactCache = null;
+            return this;
+        }
+
+        public ContactHelper Delete(ContactData contact)
+        {
+            SelectContact(contact.Id);
             Click(By.XPath("//input[@value='Delete']"));
             driver.SwitchTo().Alert().Accept();
             manager.Navigator.ClickHomePage();
@@ -156,10 +167,17 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper SelectContact()
+        public ContactHelper SelectContact(int index)
         {
             manager.Navigator.OpenHomePage();
-            Click(By.Name("selected[]"));
+            Click(By.Name("selected[]'])[" + (index + 1) + "]"));
+            return this;
+        }
+
+        public ContactHelper SelectContact(string id)
+        {
+            manager.Navigator.OpenHomePage();
+            Click(By.Id(id));
             return this;
         }
 
@@ -171,9 +189,9 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper SubmitContactModification()
+        public ContactHelper SubmitContactModification(int index)
         {
-            Click(By.XPath("//input[@name='update'][2]"));
+            Click(By.XPath("//input[@name='update'][" + index + "]"));
             IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
             contactCache = null;
             return this;

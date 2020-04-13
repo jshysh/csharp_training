@@ -7,21 +7,19 @@ namespace WebAddressbookTests
     [TestFixture]
     public class GroupRemovalTests : AuthTestBase
     {
-        GroupData group = new GroupData("groupname1");
-
         [Test]
         public void GroupRemovalTest()
-        {        
-            if (!app.Groups.VerifyGroupExists())
-            {
-                app.Groups.Create(group);
-            }
-            List<GroupData> oldGroups = app.Groups.GetGroupList();
-            app.Groups.Delete();
-            Assert.AreEqual(oldGroups.Count -1, app.Groups.GetGroupCount());
-            List<GroupData> newGroups = app.Groups.GetGroupList();
-
+        {
+            app.Groups.VerifyGroupExists();
+            List<GroupData> oldGroups = GroupData.GetAll();
             GroupData toBeRemoved = oldGroups[0];
+
+            app.Groups.Delete(toBeRemoved);
+
+            Assert.AreEqual(oldGroups.Count -1, app.Groups.GetGroupCount());
+
+            List<GroupData> newGroups = GroupData.GetAll();
+
             oldGroups.RemoveAt(0);
             Assert.AreEqual(oldGroups, newGroups);
 

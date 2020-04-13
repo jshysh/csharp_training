@@ -24,7 +24,7 @@ namespace WebAddressbookTests
             }
             List<GroupData> oldGroups = app.Groups.GetGroupList();
             GroupData oldData = oldGroups[0];
-            app.Groups.Modify(newData);
+            app.Groups.Modify(newData, 0);
             Assert.AreEqual(oldGroups.Count, app.Groups.GetGroupCount());
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
