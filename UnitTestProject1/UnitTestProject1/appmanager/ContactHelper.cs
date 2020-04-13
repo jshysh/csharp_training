@@ -95,13 +95,21 @@ namespace WebAddressbookTests
             };
         }
 
-
-        public ContactHelper Update(ContactData contact, int index)
+        public ContactHelper Modify(ContactData contact, int index)
         {
             contactCache = null;
             InitContactEdit(index);
             FillContactForm(contact);
-            SubmitContactModification(0);
+            SubmitContactModification();
+            return this;
+        }
+
+        public ContactHelper Modify(ContactData contact)
+        {
+            contactCache = null;
+            InitContactEdit(contact.Id);
+            FillContactForm(contact);
+            SubmitContactModification();
             return this;
         }
 
@@ -159,6 +167,16 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper InitContactEdit(String id)
+        {
+            Click(By.XPath("//a[contains(@href,'edit.php?id=" + id + "')]"));
+            IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
+
+            return this;
+        }
+
+
+
         public ContactHelper OpenContactDetails(int index)
         {
             driver.FindElements(By.Name("entry"))[index]
@@ -174,9 +192,8 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper SelectContact(string id)
+        public ContactHelper SelectContact(String id)
         {
-            manager.Navigator.OpenHomePage();
             Click(By.Id(id));
             return this;
         }
@@ -189,10 +206,9 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper SubmitContactModification(int index)
+        public ContactHelper SubmitContactModification()
         {
-            Click(By.XPath("//input[@name='update'][" + index + "]"));
-            IsElementPresent(By.XPath("//h1[contains(text(),'Edit / add address book entry')]"));
+            driver.FindElement(By.Name("update")).Click();
             contactCache = null;
             return this;
         }
