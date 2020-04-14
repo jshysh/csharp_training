@@ -27,6 +27,33 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public void AddContactToGroup(ContactData contact, GroupData group)
+        {
+            manager.Navigator.OpenHomePage();
+            ClearGroupFilter();
+            SelectContact(contact.Id);
+            SelectGroupToAdd(group.Name);
+            CommitAddingContactToGroup();
+        }
+
+        public void CommitAddingContactToGroup()
+        {
+            Click(By.Name("add"));
+            new WebDriverWait(driver, TimeSpan.FromMilliseconds(10))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox"))
+                .Count > 0);
+        }
+
+        public void SelectGroupToAdd(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByText(name);
+        }
+
+        public void ClearGroupFilter()
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
+        }
+
         public ContactHelper Search(string s)
         {
             manager.Navigator.ClickHomePage();
@@ -174,9 +201,7 @@ namespace WebAddressbookTests
 
             return this;
         }
-
-
-
+               
         public ContactHelper OpenContactDetails(int index)
         {
             driver.FindElements(By.Name("entry"))[index]

@@ -96,7 +96,16 @@ namespace WebAddressbookTests
             start = DateTime.Now;
             List<GroupData> fromDb = GroupData.GetAll();
             end = DateTime.Now;
-            System.Console.WriteLine(end.Subtract(start));
+            Console.WriteLine(end.Subtract(start));
+        }
+
+        [Test]
+        public void TestDBConnectivity_G1()
+        {
+            foreach (ContactData contact in ContactData.GetAll())
+            {
+                System.Console.Out.WriteLine(contact.Deprecated);
+            }
         }
     }
 }
