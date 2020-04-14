@@ -13,7 +13,7 @@ using OpenQA.Selenium.Support.UI;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    class ContactRemovalTests : AuthTestBase
+    class ContactRemovalTests : ContactTestBase
     {
 
         [Test]
