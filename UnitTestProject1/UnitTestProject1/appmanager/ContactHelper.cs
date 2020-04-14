@@ -104,11 +104,11 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public ContactHelper Modify(ContactData contact)
+        public ContactHelper Modify(ContactData toBeModified, ContactData newData)
         {
             contactCache = null;
-            InitContactEdit(contact.Id);
-            FillContactForm(contact);
+            InitContactEdit(toBeModified.Id);
+            FillContactForm(newData);
             SubmitContactModification();
             return this;
         }

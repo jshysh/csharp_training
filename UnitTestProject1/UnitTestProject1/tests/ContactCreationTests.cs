@@ -100,6 +100,5 @@ namespace WebAddressbookTests
             end = DateTime.Now;
             System.Console.WriteLine(end.Subtract(start));
         }
-
     }
 }
