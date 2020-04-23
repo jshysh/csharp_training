@@ -287,7 +287,7 @@ namespace WebAddressbookTests
             manager.Navigator.ClickHomePage();
             if (!IsElementPresent(By.Name("entry")))
             {
-                ContactData contact = new ContactData("Vasilisa", "Smirnova");
+                ContactData contact = new ContactData("John", "Smith");
                 Create(contact);
             }
             return this;
@@ -306,6 +306,28 @@ namespace WebAddressbookTests
 
             Match m = new Regex(@"\d+").Match(text);
             return Int32.Parse(m.Value);
+        }
+
+        public ContactHelper VerifyContactInGroupPresence(GroupData group)
+        {
+            if (ContactData.GetAll().Except(group.GetContacts()).Count() == 0)
+            {
+                ContactData contact = group.GetContacts().First();
+
+                RemoveContactFromGroup(contact, group);
+            }
+            return this;
+        }
+
+        public ContactHelper VerifyContactInGroupAbsence(GroupData group)
+        {
+            if (group.GetContacts().Count() == 0)
+            {
+                ContactData contact = ContactData.GetAll().First();
+
+                AddContactToGroup(contact, group);
+            }
+            return this;
         }
     }
 }

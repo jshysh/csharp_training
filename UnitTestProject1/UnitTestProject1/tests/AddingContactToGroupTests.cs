@@ -9,13 +9,24 @@ namespace WebAddressbookTests
 {
     public class AddingContactToGroupTests : AuthTestBase
     {
+        [SetUp]
+
+        // Common verification
+        public void VerifyObjectPresence()
+        {
+            app.Groups.VerifyGroupExists();
+            app.Contacts.VerifyContactExists();
+        }
+
         [Test]
         public void TestAddingContactToGroup()
         {
             GroupData group = GroupData.GetAll()[0];
+
+            app.Contacts.VerifyContactInGroupPresence(group);
+
             List<ContactData> oldList = group.GetContacts();
-            ContactData contact = ContactData.GetAll()
-                .Except(group.GetContacts()).First();
+            ContactData contact = ContactData.GetAll().Except(group.GetContacts()).First();
 
             app.Contacts.AddContactToGroup(contact, group);
 
@@ -31,6 +42,9 @@ namespace WebAddressbookTests
         public void TestRemovingContactFromGroup()
         {
             GroupData group = GroupData.GetAll()[0];
+
+            app.Contacts.VerifyContactInGroupAbsence(group);
+
             List<ContactData> oldList = group.GetContacts();
             ContactData contact = group.GetContacts().First();
 
