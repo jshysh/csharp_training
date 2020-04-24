@@ -7,6 +7,7 @@ using TestStack.White.UIItems;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.TreeItems;
 using TestStack.White.UIItems.WindowItems;
+using TestStack.White.UIItems.WPFUIItems;
 using TestStack.White.WindowsAPI;
 
 namespace addressbook_tests_white
@@ -62,6 +63,32 @@ namespace addressbook_tests_white
         {
             manager.MainWindow.Get<Button>("groupButton").Click();
             return manager.MainWindow.ModalWindow(GROUPWINTITLE);
+        }
+
+        public void Delete(int index)
+        {
+            Window dialog = OpenGroupsDialog(); //opening group dialog
+
+            Tree tree = dialog.Get<Tree>("uxAddressTreeView");
+            TreeNode root = tree.Nodes[0];
+            root.Nodes[index].Select();
+
+            dialog.Get<Button>("uxDeleteAddressButton").Click();
+            dialog.Get<RadioButton>("uxDeleteGroupsOnlyRadioButton").Click(); //move contacts before delete
+//          dialog.Get<RadioButton>("uxDeleteAllRadioButton").Click(); //delete all
+            dialog.Get<Button>("uxOKAddressButton").Click();
+            
+            CloseGroupsDialog(dialog);
+        }
+
+       
+        public void VerifyGroupExists()
+        {
+            if (GetGroupList().Count < 0)
+            {
+                GroupData group = new GroupData();
+                Add(group);
+            }
         }
     }
 }
