@@ -8,23 +8,23 @@ namespace addressbook_tests_autoit
     public class GroupCreationTests : TestBase
     {
         [Test]
-        public void TestGroupCreation()
+        public void GroupCreationTest()
         {
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
-            GroupData newGroup = new GroupData()
+            GroupData group = new GroupData()
             {
-                Name = "Test"
+                Name = "test"
             };
 
-            app.Groups.Create(newGroup);
+            app.Groups.Add(group);
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
-            oldGroups.Add(newGroup);
+            oldGroups.Add(group);
             oldGroups.Sort();
             newGroups.Sort();
 
-            Assert.AreEqual(oldGroups, newGroup);
+            Assert.AreEqual(oldGroups, newGroups);
         }
     }
 }

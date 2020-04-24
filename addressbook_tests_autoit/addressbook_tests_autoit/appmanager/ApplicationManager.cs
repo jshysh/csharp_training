@@ -11,6 +11,7 @@ namespace addressbook_tests_autoit
     public class ApplicationManager
     {
         public static string WINTITLE = "Free Address Book";
+
         private AutoItX3 aux;
         private GroupHelper groupHelper;
 
@@ -19,7 +20,7 @@ namespace addressbook_tests_autoit
             aux = new AutoItX3(); //initialization
             aux.Run(@"C:\addressbook\AddressBook.exe", "", aux.SW_SHOW); //runApp
             aux.WinWait(WINTITLE);
-            aux.WinWaitActive(WINTITLE);
+            aux.WinActivate(WINTITLE);
             aux.WinWaitActive(WINTITLE);
 
             groupHelper = new GroupHelper(this);
