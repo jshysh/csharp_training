@@ -31,20 +31,6 @@ namespace mantis_tests
             SubmitProjectRemoval();
         }
 
-        public void Create(AccountData account, ProjectData projectData)
-        {
-            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
-            Mantis.ProjectData project = new Mantis.ProjectData();
-            project.name = projectData.Name;
-            client.mc_project_add(account.Name, account.Password, project);
-        }
-
-        private void Remove(AccountData account, string projectId)
-        {
-            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
-            client.mc_project_delete(account.Name, account.Password, projectId);
-        }
-
         // Project creation methods
         public void InitProjectCreation()
         {
@@ -97,64 +83,33 @@ namespace mantis_tests
             return list;
         }
 
-        public List<ProjectData> GetProjectsList(AccountData account)
-        {
-            List<ProjectData> list = new List<ProjectData>();
-
-            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
-            Mantis.ProjectData[] projects = client.mc_projects_get_user_accessible(account.Name, account.Password);
-            foreach (Mantis.ProjectData project in projects)
-            {
-                list.Add(new ProjectData()
-                {
-                    Name = project.name,
-                    Description = project.description
-                });
-            }
-            return list;
-        }
-
         public int GetProjectCount()
         {
             manager.Navigator.GoToManageProjPage();
             return driver.FindElements(By.CssSelector(".table"))[0].FindElements(By.CssSelector("tbody>tr")).Count();
         }
 
-        public void VerifyProjectPresence(ProjectData project)
+        public void VerifyProjectPresence()
         {
             manager.Navigator.GoToManageProjPage();
 
             if (!IsElementPresent(By.XPath("//a[contains(@href,'manage_proj_edit_page.php?project_id')]")))
             {
+                ProjectData project = new ProjectData()
+                {
+                    Name = "Test Project",
+                    Description = "Test Project Description"
+                };
                 Create(project);
-            }
-        }
-
-        public void VerifyProjectPresence(AccountData account, ProjectData project)
-        {
-            if (GetProjectsList(account).Count == 0)
-            {
-                Create(account, project);
             }
         }
 
         public void VerifySameProjectPresence(ProjectData project)
         {
             manager.Navigator.GoToManageProjPage();
-            if (IsElementPresent(By.XPath("//table[1]/tbody/tr/td[1]/a[.='" + project.Name + "']")))
+            if (IsElementPresent(By.XPath("//table[1]/tbody/tr/td[1]/a[.='"+ project.Name + "']")))
             {
                 Remove(project);
-            }
-        }
-
-        public void VerifySameProjectPresence(AccountData account, ProjectData project)
-        {
-            Mantis.MantisConnectPortTypeClient client = new Mantis.MantisConnectPortTypeClient();
-            string projectId = client.mc_project_get_id_from_name(account.Name, account.Password, project.Name);
-
-            if (projectId != null && projectId != "0")
-            {
-                Remove(account, projectId);
             }
         }
     }

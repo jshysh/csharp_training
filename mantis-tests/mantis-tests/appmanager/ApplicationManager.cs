@@ -8,7 +8,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 
-
 namespace mantis_tests
 {
     public class ApplicationManager
@@ -16,21 +15,25 @@ namespace mantis_tests
         protected IWebDriver driver;
         protected string baseURL;
 
-        public RegistrationHelper Registration { get; set; }
-        public FtpHelper Ftp { get; set; }
-        public NavigationHelper Navigator { get; set; }
+        public RegistrationHelper Registration { get; private set; }
+        public FtpHelper Ftp { get; private set; }
+        public ProjectManagementHelper Projects { get; private set; }
+        public LoginHelper Auth { get; private set; }
+        public NavigationHalper Navigator { get; private set; }
 
-
-        protected static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
+        private static ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
 
         private ApplicationManager()
         {
             driver = new FirefoxDriver();
-            baseURL = "http://localhost/";
+            baseURL = "http://localhost/mantisbt-2.24.0/";
+
             Registration = new RegistrationHelper(this);
             Ftp = new FtpHelper(this);
+            Projects = new ProjectManagementHelper(this);
             Auth = new LoginHelper(this);
-            Navigator = new NavigationHelper(this, baseURL);
+            Navigator = new NavigationHalper(this, baseURL);
+
         }
 
         ~ApplicationManager()
@@ -47,7 +50,7 @@ namespace mantis_tests
 
         public static ApplicationManager GetInstance()
         {
-            if (! app.IsValueCreated)
+            if (!app.IsValueCreated)
             {
                 ApplicationManager newInstance = new ApplicationManager();
                 newInstance.driver.Url = "http://localhost/mantisbt-2.24.0/login_page.php";
@@ -62,12 +65,6 @@ namespace mantis_tests
             {
                 return driver;
             }
-            set
-            {
-
-            }
         }
-
-        public object Auth { get; internal set; }
     }
 }

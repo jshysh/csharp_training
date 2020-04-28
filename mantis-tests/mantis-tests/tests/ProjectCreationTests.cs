@@ -16,22 +16,19 @@ namespace mantis_tests
         {
             ProjectData project = new ProjectData()
             {
-                Name = "New Project1",
-                Description = "New Project1 Description"
+                Name = "New Project",
+                Description = "New Project Description"
             };
 
-            //app.Projects.VerifySameProjectPresence(project);
-            app.Projects.VerifySameProjectPresence(account, project);
+            app.Projects.VerifySameProjectPresence(project);
 
-            //List<ProjectData> oldProjects = app.Projects.GetProjectsList();
-            List<ProjectData> oldProjects = app.Projects.GetProjectsList(account);
+            List<ProjectData> oldProjects = app.Projects.GetProjectsList();
 
             app.Projects.Create(project);
 
             Assert.AreEqual(oldProjects.Count + 1, app.Projects.GetProjectCount());
 
-            //List<ProjectData> newProjects = app.Projects.GetProjectsList();
-            List<ProjectData> newProjects = app.Projects.GetProjectsList(account);
+            List<ProjectData> newProjects = app.Projects.GetProjectsList();
             oldProjects.Add(project);
             oldProjects.Sort();
             newProjects.Sort();

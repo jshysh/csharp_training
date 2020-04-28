@@ -9,11 +9,11 @@ using OpenQA.Selenium.Support.UI;
 namespace mantis_tests
 {
 
-    public class NavigationHelper : HelperBase
+    public class NavigationHalper : HelperBase
     {
         private string baseURL;
 
-        public NavigationHelper(ApplicationManager manager, string baseURL) : base(manager)
+        public NavigationHalper(ApplicationManager manager, string baseURL) : base(manager)
         {
             this.baseURL = baseURL;
         }
@@ -36,6 +36,7 @@ namespace mantis_tests
             }
             OpenManageOverviewPage();
             OpenManageProjPage();
+            //driver.Manage().Timeouts().ImplicitWait = new TimeSpan(40);
         }
 
         public void OpenManageOverviewPage()

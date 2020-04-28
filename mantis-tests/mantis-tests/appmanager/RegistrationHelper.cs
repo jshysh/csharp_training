@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Support.UI;
 
 namespace mantis_tests
 {
@@ -13,32 +15,27 @@ namespace mantis_tests
 
         public void Register(AccountData account)
         {
-            OpenMainPage();
+            manager.Navigator.OpenMainPage();
             OpenRegistrationForm();
             FillRegistrationForm(account);
             SubmitRegistration();
         }
 
-        public void OpenRegistrationForm()
+        private void OpenRegistrationForm()
         {
-            driver.FindElement(By.CssSelector(".back-to-login-link")).Click();
+            driver.FindElement(By.CssSelector("a.back-to-login-link")).Click();
         }
 
-        public void SubmitRegistration()
+        private void SubmitRegistration()
         {
-            driver.FindElement(By.CssSelector("input.button")).Click();
+            driver.FindElement(By.CssSelector("input.btn-success")).Click();
         }
 
-        public void FillRegistrationForm(AccountData account)
+        private void FillRegistrationForm(AccountData account)
         {
-            driver.FindElement(By.Name("username")).SendKeys(account.Name);
-            driver.FindElement(By.Name("email")).SendKeys(account.Email);
-
-        }
-
-        public void OpenMainPage()
-        {
-            manager.Driver.Url = "http://localhost/mantisbt-2.24.0/login_page.php";
+            driver.FindElement(By.Id("username")).SendKeys(account.Name);
+            driver.FindElement(By.Id("email-field")).SendKeys(account.Email);
+            driver.FindElement(By.Id("email-field")).SendKeys(account.Email);
         }
     }
 }

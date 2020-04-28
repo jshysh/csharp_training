@@ -7,6 +7,6 @@ $g_db_password            = '';
 
 $g_default_timezone       = 'Europe/Berlin';
 
-$g_crypto_master_salt     = 'mgvBrhPUER63B4IQzMc1uZ3H5xsM01eync8V4OAzs+E=';
-$g_signup_use_captcha     = OFF;
+$g_crypto_master_salt     = '8+QoVlUraRk38yefFQf+rm82spxs5AQ8M0TulKAdO0E=';
 
+$g_signup_use_captcha	  = OFF;

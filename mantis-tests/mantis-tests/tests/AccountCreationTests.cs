@@ -19,19 +19,16 @@ namespace mantis_tests
             }
         }
 
-
         [Test]
         public void TestAccountRegistration()
         {
-            AccountData account = new AccountData() {
+            AccountData account = new AccountData()
+            {
                 Name = "testuser",
-                Password = "root",
+                Password = "password",
                 Email = "testuser@localhost.localdomain"
             };
-
             app.Registration.Register(account);
-
-
         }
 
         [TestFixtureTearDown]
