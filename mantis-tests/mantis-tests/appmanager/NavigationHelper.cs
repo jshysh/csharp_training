@@ -9,11 +9,11 @@ using OpenQA.Selenium.Support.UI;
 namespace mantis_tests
 {
 
-    public class NavigationHalper : HelperBase
+    public class NavigationHelper : HelperBase
     {
         private string baseURL;
 
-        public NavigationHalper(ApplicationManager manager, string baseURL) : base(manager)
+        public NavigationHelper(ApplicationManager manager, string baseURL) : base(manager)
         {
             this.baseURL = baseURL;
         }

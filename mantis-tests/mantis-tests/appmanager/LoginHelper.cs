@@ -24,9 +24,9 @@ namespace mantis_tests
                 Logout();
             }
             manager.Navigator.OpenMainPage();
-            Type(By.Name("username"), account.Name);
+            Type(By.Id("username"), account.Name);
             driver.FindElement(By.XPath("//form[@id='login-form']/fieldset/input[contains(@class,'btn')]")).Click();
-            Type(By.Name("password"), account.Password);
+            Type(By.Id("password"), account.Password);
             driver.FindElement(By.XPath("//form[@id='login-form']/fieldset/input[contains(@class,'btn')]")).Click();
         }
 
@@ -48,7 +48,6 @@ namespace mantis_tests
         {
             return IsLoggedIn()
                 && GetLoggetUserName() == account.Name;
-
         }
 
         public string GetLoggetUserName()
